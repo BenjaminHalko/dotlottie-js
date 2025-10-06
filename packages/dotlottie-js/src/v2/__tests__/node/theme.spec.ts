@@ -516,8 +516,8 @@ describe('LottieTheme', () => {
                 id: 'text-rule',
                 type: 'Text',
                 value: {
-                  content: 'Hello World',
-                  font: 'Arial',
+                  text: 'Hello World',
+                  fontFamily: 'Arial',
                   fontSize: 24,
                   fillColor: [1, 0, 0, 1],
                 },
@@ -529,16 +529,16 @@ describe('LottieTheme', () => {
         const rule = theme.data.rules[0] as {
           type: 'Text';
           value: {
-            content?: string;
             fillColor?: number[];
-            font?: string;
+            fontFamily?: string;
             fontSize?: number;
+            text?: string;
           };
         };
 
         expect(rule.type).toBe('Text');
-        expect(rule.value.content).toBe('Hello World');
-        expect(rule.value.font).toBe('Arial');
+        expect(rule.value.text).toBe('Hello World');
+        expect(rule.value.fontFamily).toBe('Arial');
         expect(rule.value.fontSize).toBe(24);
         expect(rule.value.fillColor).toEqual([1, 0, 0, 1]);
       });
@@ -552,8 +552,8 @@ describe('LottieTheme', () => {
                 id: 'text-full-rule',
                 type: 'Text',
                 value: {
-                  content: 'Full Text',
-                  font: 'Helvetica',
+                  text: 'Full Text',
+                  fontFamily: 'Helvetica',
                   fontSize: 32,
                   fillColor: [0, 1, 0, 1],
                   strokeColor: [1, 0, 0],
@@ -562,7 +562,7 @@ describe('LottieTheme', () => {
                   lineHeight: 1.5,
                   tracking: 100,
                   justify: 'Center',
-                  caps: 'AllCaps',
+                  textCaps: 'AllCaps',
                   baselineShift: 5,
                   wrapSize: [200, 100],
                   wrapPosition: [50, 50],
@@ -576,16 +576,16 @@ describe('LottieTheme', () => {
           type: 'Text';
           value: {
             baselineShift?: number;
-            caps?: string;
-            content?: string;
             fillColor?: number[];
-            font?: string;
+            fontFamily?: string;
             fontSize?: number;
             justify?: string;
             lineHeight?: number;
             strokeColor?: number[];
             strokeOverFill?: boolean;
             strokeWidth?: number;
+            text?: string;
+            textCaps?: string;
             tracking?: number;
             wrapPosition?: number[];
             wrapSize?: number[];
@@ -593,8 +593,8 @@ describe('LottieTheme', () => {
         };
 
         expect(rule.type).toBe('Text');
-        expect(rule.value.content).toBe('Full Text');
-        expect(rule.value.font).toBe('Helvetica');
+        expect(rule.value.text).toBe('Full Text');
+        expect(rule.value.fontFamily).toBe('Helvetica');
         expect(rule.value.fontSize).toBe(32);
         expect(rule.value.fillColor).toEqual([0, 1, 0, 1]);
         expect(rule.value.strokeColor).toEqual([1, 0, 0]);
@@ -603,7 +603,7 @@ describe('LottieTheme', () => {
         expect(rule.value.lineHeight).toBe(1.5);
         expect(rule.value.tracking).toBe(100);
         expect(rule.value.justify).toBe('Center');
-        expect(rule.value.caps).toBe('AllCaps');
+        expect(rule.value.textCaps).toBe('AllCaps');
         expect(rule.value.baselineShift).toBe(5);
         expect(rule.value.wrapSize).toEqual([200, 100]);
         expect(rule.value.wrapPosition).toEqual([50, 50]);
@@ -621,14 +621,14 @@ describe('LottieTheme', () => {
                   {
                     frame: 0,
                     value: {
-                      content: 'Start',
+                      text: 'Start',
                       fontSize: 20,
                     },
                   },
                   {
                     frame: 30,
                     value: {
-                      content: 'End',
+                      text: 'End',
                       fontSize: 40,
                       fillColor: [0, 0, 1, 1],
                     },
@@ -643,9 +643,9 @@ describe('LottieTheme', () => {
           keyframes: Array<{
             frame: number;
             value: {
-              content?: string;
               fillColor?: number[];
               fontSize?: number;
+              text?: string;
             };
           }>;
           type: 'Text';
@@ -654,10 +654,10 @@ describe('LottieTheme', () => {
         expect(rule.type).toBe('Text');
         expect(rule.keyframes).toHaveLength(2);
         expect(rule.keyframes[0]?.frame).toBe(0);
-        expect(rule.keyframes[0]?.value.content).toBe('Start');
+        expect(rule.keyframes[0]?.value.text).toBe('Start');
         expect(rule.keyframes[0]?.value.fontSize).toBe(20);
         expect(rule.keyframes[1]?.frame).toBe(30);
-        expect(rule.keyframes[1]?.value.content).toBe('End');
+        expect(rule.keyframes[1]?.value.text).toBe('End');
         expect(rule.keyframes[1]?.value.fontSize).toBe(40);
         expect(rule.keyframes[1]?.value.fillColor).toEqual([0, 0, 1, 1]);
       });
@@ -702,7 +702,7 @@ describe('LottieTheme', () => {
                   id: 'text-rule',
                   type: 'Text',
                   value: {
-                    content: 'Test',
+                    text: 'Test',
                     justify: justify as
                       | 'Center'
                       | 'JustifyLastCenter'
@@ -723,7 +723,7 @@ describe('LottieTheme', () => {
         });
       });
 
-      it('validates caps enum values', () => {
+      it('validates textCaps enum values', () => {
         const validCapsValues = ['Regular', 'AllCaps', 'SmallCaps'];
 
         validCapsValues.forEach((caps) => {
@@ -735,17 +735,17 @@ describe('LottieTheme', () => {
                   id: 'text-rule',
                   type: 'Text',
                   value: {
-                    content: 'Test',
-                    caps: caps as 'AllCaps' | 'Regular' | 'SmallCaps',
+                    text: 'Test',
+                    textCaps: caps as 'AllCaps' | 'Regular' | 'SmallCaps',
                   },
                 },
               ],
             },
           });
 
-          const rule = theme.data.rules[0] as { value: { caps?: string } };
+          const rule = theme.data.rules[0] as { value: { textCaps?: string } };
 
-          expect(rule.value.caps).toBe(caps);
+          expect(rule.value.textCaps).toBe(caps);
         });
       });
     });
