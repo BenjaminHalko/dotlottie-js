@@ -506,6 +506,250 @@ describe('LottieTheme', () => {
       });
     });
 
+    describe('Text rule', () => {
+      it('creates a theme with a Text rule value', () => {
+        const theme = new LottieTheme({
+          id: 'text-theme',
+          data: {
+            rules: [
+              {
+                id: 'text-rule',
+                type: 'Text',
+                value: {
+                  content: 'Hello World',
+                  font: 'Arial',
+                  fontSize: 24,
+                  fillColor: [1, 0, 0, 1],
+                },
+              },
+            ],
+          },
+        });
+
+        const rule = theme.data.rules[0] as {
+          type: 'Text';
+          value: {
+            content?: string;
+            fillColor?: number[];
+            font?: string;
+            fontSize?: number;
+          };
+        };
+
+        expect(rule.type).toBe('Text');
+        expect(rule.value.content).toBe('Hello World');
+        expect(rule.value.font).toBe('Arial');
+        expect(rule.value.fontSize).toBe(24);
+        expect(rule.value.fillColor).toEqual([1, 0, 0, 1]);
+      });
+
+      it('creates a theme with a Text rule with all properties', () => {
+        const theme = new LottieTheme({
+          id: 'text-full-theme',
+          data: {
+            rules: [
+              {
+                id: 'text-full-rule',
+                type: 'Text',
+                value: {
+                  content: 'Full Text',
+                  font: 'Helvetica',
+                  fontSize: 32,
+                  fillColor: [0, 1, 0, 1],
+                  strokeColor: [1, 0, 0],
+                  strokeWidth: 2,
+                  strokeOverFill: true,
+                  lineHeight: 1.5,
+                  tracking: 100,
+                  justify: 'Center',
+                  caps: 'AllCaps',
+                  baselineShift: 5,
+                  wrapSize: [200, 100],
+                  wrapPosition: [50, 50],
+                },
+              },
+            ],
+          },
+        });
+
+        const rule = theme.data.rules[0] as {
+          type: 'Text';
+          value: {
+            baselineShift?: number;
+            caps?: string;
+            content?: string;
+            fillColor?: number[];
+            font?: string;
+            fontSize?: number;
+            justify?: string;
+            lineHeight?: number;
+            strokeColor?: number[];
+            strokeOverFill?: boolean;
+            strokeWidth?: number;
+            tracking?: number;
+            wrapPosition?: number[];
+            wrapSize?: number[];
+          };
+        };
+
+        expect(rule.type).toBe('Text');
+        expect(rule.value.content).toBe('Full Text');
+        expect(rule.value.font).toBe('Helvetica');
+        expect(rule.value.fontSize).toBe(32);
+        expect(rule.value.fillColor).toEqual([0, 1, 0, 1]);
+        expect(rule.value.strokeColor).toEqual([1, 0, 0]);
+        expect(rule.value.strokeWidth).toBe(2);
+        expect(rule.value.strokeOverFill).toBe(true);
+        expect(rule.value.lineHeight).toBe(1.5);
+        expect(rule.value.tracking).toBe(100);
+        expect(rule.value.justify).toBe('Center');
+        expect(rule.value.caps).toBe('AllCaps');
+        expect(rule.value.baselineShift).toBe(5);
+        expect(rule.value.wrapSize).toEqual([200, 100]);
+        expect(rule.value.wrapPosition).toEqual([50, 50]);
+      });
+
+      it('creates a theme with a Text rule and keyframes', () => {
+        const theme = new LottieTheme({
+          id: 'text-keyframes-theme',
+          data: {
+            rules: [
+              {
+                id: 'text-keyframes-rule',
+                type: 'Text',
+                keyframes: [
+                  {
+                    frame: 0,
+                    value: {
+                      content: 'Start',
+                      fontSize: 20,
+                    },
+                  },
+                  {
+                    frame: 30,
+                    value: {
+                      content: 'End',
+                      fontSize: 40,
+                      fillColor: [0, 0, 1, 1],
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        });
+
+        const rule = theme.data.rules[0] as {
+          keyframes: Array<{
+            frame: number;
+            value: {
+              content?: string;
+              fillColor?: number[];
+              fontSize?: number;
+            };
+          }>;
+          type: 'Text';
+        };
+
+        expect(rule.type).toBe('Text');
+        expect(rule.keyframes).toHaveLength(2);
+        expect(rule.keyframes[0]?.frame).toBe(0);
+        expect(rule.keyframes[0]?.value.content).toBe('Start');
+        expect(rule.keyframes[0]?.value.fontSize).toBe(20);
+        expect(rule.keyframes[1]?.frame).toBe(30);
+        expect(rule.keyframes[1]?.value.content).toBe('End');
+        expect(rule.keyframes[1]?.value.fontSize).toBe(40);
+        expect(rule.keyframes[1]?.value.fillColor).toEqual([0, 0, 1, 1]);
+      });
+
+      it('creates a theme with a Text rule and expression', () => {
+        const theme = new LottieTheme({
+          id: 'text-expression-theme',
+          data: {
+            rules: [
+              {
+                id: 'text-expression-rule',
+                type: 'Text',
+                expression: 'time.toFixed(2)',
+              },
+            ],
+          },
+        });
+
+        const rule = theme.data.rules[0] as { expression: string; type: 'Text' };
+
+        expect(rule.type).toBe('Text');
+        expect(rule.expression).toBe('time.toFixed(2)');
+      });
+
+      it('validates justify enum values', () => {
+        const validJustifyValues = [
+          'Left',
+          'Right',
+          'Center',
+          'JustifyLastLeft',
+          'JustifyLastRight',
+          'JustifyLastCenter',
+          'JustifyLastFull',
+        ];
+
+        validJustifyValues.forEach((justify) => {
+          const theme = new LottieTheme({
+            id: `text-justify-${justify}`,
+            data: {
+              rules: [
+                {
+                  id: 'text-rule',
+                  type: 'Text',
+                  value: {
+                    content: 'Test',
+                    justify: justify as
+                      | 'Center'
+                      | 'JustifyLastCenter'
+                      | 'JustifyLastFull'
+                      | 'JustifyLastLeft'
+                      | 'JustifyLastRight'
+                      | 'Left'
+                      | 'Right',
+                  },
+                },
+              ],
+            },
+          });
+
+          const rule = theme.data.rules[0] as { value: { justify?: string } };
+
+          expect(rule.value.justify).toBe(justify);
+        });
+      });
+
+      it('validates caps enum values', () => {
+        const validCapsValues = ['Regular', 'AllCaps', 'SmallCaps'];
+
+        validCapsValues.forEach((caps) => {
+          const theme = new LottieTheme({
+            id: `text-caps-${caps}`,
+            data: {
+              rules: [
+                {
+                  id: 'text-rule',
+                  type: 'Text',
+                  value: {
+                    content: 'Test',
+                    caps: caps as 'AllCaps' | 'Regular' | 'SmallCaps',
+                  },
+                },
+              ],
+            },
+          });
+
+          const rule = theme.data.rules[0] as { value: { caps?: string } };
+
+          expect(rule.value.caps).toBe(caps);
+        });
+      });
+    });
+
     // Test themes with multiple rule types
     describe('Multiple rule types', () => {
       it('creates a theme with multiple rule types', () => {
