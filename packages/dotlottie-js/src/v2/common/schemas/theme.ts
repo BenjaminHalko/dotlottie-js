@@ -112,8 +112,8 @@ const GradientRuleSchema = object({
 });
 
 const TextDocumentSchema = object({
-  content: optional(string()),
-  font: optional(string()),
+  text: optional(string()),
+  fontFamily: optional(string()),
   fontSize: optional(number()),
   fillColor: optional(array(number())),
   strokeColor: optional(array(number())),
@@ -132,7 +132,7 @@ const TextDocumentSchema = object({
       literal('JustifyLastFull'),
     ]),
   ),
-  caps: optional(union([literal('Regular'), literal('AllCaps'), literal('SmallCaps')])),
+  textCaps: optional(union([literal('Regular'), literal('AllCaps'), literal('SmallCaps')])),
   baselineShift: optional(number()),
   wrapSize: optional(array(number())),
   wrapPosition: optional(array(number())),
